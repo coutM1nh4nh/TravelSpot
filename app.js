@@ -74,9 +74,9 @@ app.delete('/spots/:id', async (req, res) => {
     res.redirect('/spots');
 });
 
-//app.use(err,req,res,next) => {
-// res.send('Oh no, something went wrong')  
-// }
+app.use ((err,req,res,next) => {
+res.send('Oh no, something went wrong')  
+});
 
 app.listen(3000, () => {
     console.log('Serving on port 3000')
