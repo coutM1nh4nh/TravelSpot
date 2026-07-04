@@ -59,6 +59,9 @@
                             <p class="card-text">
                                 Review: <%= review.body %>
                             </p>
+                            <form action="/spots/<%= spot._id %>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </form>
                         </div>
                     </div>
                     <% } %>

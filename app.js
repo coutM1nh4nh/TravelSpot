@@ -3,7 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const Joi = require('joi');
-const {spotSchema, reviewSchema} = require('./schemas.js');
+const { spotSchema, reviewSchema } = require('./schemas.js');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/expressError');
 const methodOverride = require('method-override');
@@ -45,7 +45,7 @@ const validateSpot = (req, res, next) => {
 }
 
 const validateReview = (req, res, next) => {
-    const {error} = reviewSchema.validate(req.body);
+    const { error } = reviewSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
         throw new ExpressError(msg, 400)
@@ -85,7 +85,7 @@ app.get('/spots/:id/edit', catchAsync(async (req, res) => {
     res.render('spots/edit', { spot })
 }));
 
-app.put('/spots/:id',validateSpot, catchAsync(async (req, res) => {
+app.put('/spots/:id', validateSpot, catchAsync(async (req, res) => {
     const { id } = req.params;
     const spot = await Spot.findByIdAndUpdate(id, { ...req.body.spot })
     res.redirect(`/spots/${spot._id}`)
@@ -97,9 +97,7 @@ app.delete('/spots/:id', catchAsync(async (req, res) => {
     res.redirect('/spots');
 }));
 
-//review
-
-app.post('/spots/:id/reviews', validateReview, catchAsync(async(req,res) => {
+app.post('/spots/:id/reviews', validateReview, catchAsync(async (req, res) => {
     const spot = await Spot.findById(req.params.id);
     const review = new Review(req.body.review);
     spot.reviews.push(review);
@@ -108,6 +106,12 @@ app.post('/spots/:id/reviews', validateReview, catchAsync(async(req,res) => {
     res.redirect(`/spots/${spot._id}`);
 }))
 
+app.delete('/spots/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params;
+    await Spot.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete();
+    res.redirect(`/spots/${id}`);
+}));
 
 app.all('/{*path}', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
