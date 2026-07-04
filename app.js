@@ -88,14 +88,14 @@ app.delete('/spots/:id', catchAsync(async (req, res) => {
 }));
 
 //review
-// app.post('/spots/:id/reviews', catchAsync(async(req,res) => {
-//     const spot = await Spot.findById(req.params.id);
-//     const review = new Review(req.body.review);
-//     spot.reviews.push(review);
-//     await review.save();
-//     await spot.save();
-//     res.redirect(`/spots/${spot._id}`);
-// }))
+app.post('/spots/:id/reviews', catchAsync(async(req,res) => {
+    const spot = await Spot.findById(req.params.id);
+    const review = new Review(req.body.review);
+    spot.reviews.push(review);
+    await review.save();
+    await spot.save();
+    res.redirect(`/spots/${spot._id}`);
+}))
 
 
 app.all('/{*path}', (req, res, next) => {
