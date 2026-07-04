@@ -76,8 +76,7 @@ app.post('/spots', validateSpot, catchAsync(async (req, res) => {
 
 //display
 app.get('/spots/:id', catchAsync(async (req, res) => {
-    const spot = await Spot.findById(req.params.id);
-    // .populate('reviews');
+    const spot = await Spot.findById(req.params.id).populate('reviews');
     res.render('spots/show', { spot })
 }));
 
