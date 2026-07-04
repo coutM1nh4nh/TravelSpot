@@ -13,6 +13,7 @@
 <body class="d-flex flex-column vh-100">
     <%- include('../partials/navbar') %>
     <main class="container mt-5">
+        <%- include('../partials/flash') %>
         <%- body %>
     </main>
     <%- include('../partials/footer') %>
@@ -23,25 +24,7 @@
         integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
         crossorigin="anonymous"></script>
 
-    <script>
-        (function () {
-            'use strict';
-            window.addEventListener('load', function () {
-                const forms = document.getElementsByClassName('validated-form');
-                Array.from(forms)
-                    .forEach(function (form) {
-                        form.addEventListener('submit', function (event) {
-                            if (form.checkValidity() === false) {
-                                event.preventDefault();
-                                event.stopPropagation();
-                            }
-                            form.classList.add('was-validated');
-                        }, false);
-                    });
-            }, false);
-
-        })();
-    </script>
+        <script src="/javascripts/validateForms.js"></script>  
 </body>
 
 </html>
