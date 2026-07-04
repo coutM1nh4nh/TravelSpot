@@ -3,7 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const Joi = require('joi');
-const {spotSchema} = require('./schemas.js');
+const {spotSchema, reviewSchema} = require('./schemas.js');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/expressError');
 const methodOverride = require('method-override');
@@ -42,7 +42,16 @@ const validateSpot = (req, res, next) => {
     } else {
         next();
     }
-    console.log(result);
+}
+
+const validateReview = (req, res, next) => {
+    const {error} = reviewSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
 }
 
 app.get('/', (req, res) => {
@@ -65,8 +74,10 @@ app.post('/spots', validateSpot, catchAsync(async (req, res) => {
     res.redirect(`/spots/${spot._id}`)
 }))
 
+//display
 app.get('/spots/:id', catchAsync(async (req, res) => {
     const spot = await Spot.findById(req.params.id);
+    // .populate('reviews');
     res.render('spots/show', { spot })
 }));
 
@@ -88,7 +99,8 @@ app.delete('/spots/:id', catchAsync(async (req, res) => {
 }));
 
 //review
-app.post('/spots/:id/reviews', catchAsync(async(req,res) => {
+
+app.post('/spots/:id/reviews', validateReview, catchAsync(async(req,res) => {
     const spot = await Spot.findById(req.params.id);
     const review = new Review(req.body.review);
     spot.reviews.push(review);
