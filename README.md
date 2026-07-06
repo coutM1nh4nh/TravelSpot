@@ -11,4 +11,14 @@ A full-stack website for discovering travel destinations, built with Node.js, Ex
 - Responsive user interface with Bootstrap
 
 ##🛠️Tech Stach
-
+- Backend:
++ Node.js
++ Express.js
++ MongoDB
++ Mongoose
+- Frontend:
++ EJS
++ Bootstrap 5
+- Authentication:
++ Passport.js
++ Passport Local
