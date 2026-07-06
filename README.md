@@ -9,8 +9,13 @@ A full-stack website for discovering travel destinations, built with Node.js, Ex
 - Edit existing destinations
 - Delete destinations
 - Responsive user interface with Bootstrap
+- Add and delete reviews
+- Authorization (only owners can edit or delete their destinations)
+- Server-side data validation
+- Flash messages for user feedback
+- Error handling with custom error pages
 
-##🛠️Tech Stach
+##🛠️Tech Stack
 - Backend:
 + Node.js
 + Express.js
