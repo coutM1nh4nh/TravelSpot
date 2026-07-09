@@ -1,3 +1,7 @@
+const { spotSchema, reviewSchema } = require('./schemas.js');
+const ExpressError = require('./utils/expressError');
+const Spot = require('./models/spot');
+
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
 
@@ -14,4 +18,35 @@ module.exports.storeReturnTo = (req, res, next) => {
         res.locals.returnTo = req.session.returnTo;
     }
     next();
+}
+
+
+module.exports.validateSpot = (req, res, next) => {
+    const { error } = spotSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+
+module.exports.isAuthor = async (req, res, next) => {
+    const { id } = req.params;
+    const spot = await Spot.findById(req.params.id);
+    if (!spot.author.equals(req.user._id)) {
+        req.flash('error', 'You do not have permission');
+        return res.redirect(`/spots/${id}`);
+    }
+    next();
+}
+
+module.exports.validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
 }

@@ -2,20 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const { spotSchema } = require('../schemas.js');
-const { isLoggedIn } = require('../middleware.js');
-const ExpressError = require('../utils/expressError');
+const { isLoggedIn, isAuthor, validateSpot } = require('../middleware.js');
 const Spot = require('../models/spot');
-
-const validateSpot = (req, res, next) => {
-    const { error } = spotSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
 
 router.get('/', catchAsync(async (req, res, next) => {
     const spots = await Spot.find({});
@@ -54,39 +42,25 @@ router.get('/:id', catchAsync(async (req, res) => {
     res.render('spots/show', { spot });
 }));
 
-router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
     const spot = await Spot.findById(req.params.id);
     if (!spot) {
         req.flash('error', 'Cannot edit find that spot!');
         return res.redirect('/spots');
     }
-    if (!spot.author.equals(req.user._id)) {
-        req.flash('error','You do not have permission');
-        return res.redirect(`/spots/${id}`);
-    }
     res.render('spots/edit', { spot })
 }));
 
-router.put('/:id', isLoggedIn, validateSpot, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, isAuthor, validateSpot, catchAsync(async (req, res) => {
     const { id } = req.params;
-    const spot = await Spot.findById(id);
-    if (!spot.author.equals(req.user._id)) {
-        req.flash('error','You do not have permission');
-        return res.redirect(`/spots/${id}`);
-    }
-    await Spot.findByIdAndUpdate(id, { ...req.body.spot });
+    const spot = await Spot.findByIdAndUpdate(id, { ...req.body.spot });
     req.flash('success', 'Successfully updated spot!');
     res.redirect(`/spots/${spot._id}`)
 }));
 
-router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const { id } = req.params;
-    const spot = await Spot.findById(id);
-    if (!spot.author.equals(req.user._id)) {
-        req.flash('error','You do not have permission');
-        return res.redirect(`/spots/${id}`);
-    }
     await Spot.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted spot!')
     res.redirect('/spots');
