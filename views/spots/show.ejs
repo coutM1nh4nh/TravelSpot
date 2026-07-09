@@ -36,6 +36,7 @@
             </div>
         </div>
         <div class="col-6">
+            <% if(currentUser ) { %>
             <div>
                 <h2>Leave a Review</h2>
                 <form action="/spots/<%= spot._id %>/reviews" method="POST" class="mb-3 validated-form" novalidate>
@@ -71,5 +72,6 @@
                     </div>
                     <% } %>
             </div>
+            <% } %>
         </div>
     </div>
