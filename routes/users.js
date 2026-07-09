@@ -40,6 +40,8 @@ router.post(
 
         const redirectUrl = res.locals.returnTo || '/spots';
 
+        delete req.session.returnTo; 
+        
         res.redirect(redirectUrl);
     }
 );
