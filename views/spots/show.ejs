@@ -16,6 +16,9 @@
                         <%= spot.location %>
                     </li>
                     <li class="list-group-item">
+                       By <%= spot.author.username %>
+                    </li>
+                    <li class="list-group-item">
                         <%= spot.price.toLocaleString('vi-VN') %> ₫/night
                     </li>
                 </ul>

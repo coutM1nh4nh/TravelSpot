@@ -28,9 +28,8 @@ router.get('/new', isLoggedIn, (req, res) => {
 
 
 router.post('/', isLoggedIn, validateSpot, catchAsync(async (req, res) => {
-
-    // if (!req.body.spot) throw new ExpressError('Invalid Spot Data', 400);
     const spot = new Spot(req.body.spot);
+    spot.author = req.user._id;
     await spot.save();
     req.flash('success', 'Successfully made a new spot!');
     res.redirect(`/spots/${spot._id}`);
@@ -45,7 +44,7 @@ router.get('/:id', catchAsync(async (req, res) => {
         return res.redirect('/spots');
     }
 
-    const spot = await Spot.findById(id).populate('reviews');
+    const spot = await Spot.findById(id).populate('reviews').populate('author');
 
     if (!spot) {
         req.flash('error', 'Cannot find that spot!');
