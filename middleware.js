@@ -28,13 +28,18 @@ module.exports.storeReturnTo = (req, res, next) => {
 
 
 module.exports.validateSpot = (req, res, next) => {
-    const { error } = spotSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
+    if (req.body.deleteImages && !Array.isArray(req.body.deleteImages)) {
+        req.body.deleteImages = [req.body.deleteImages];
     }
+
+    const { error } = spotSchema.validate(req.body);
+
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',');
+        throw new ExpressError(msg, 400);
+    }
+
+    next();
 }
 
 module.exports.isAuthor = async (req, res, next) => {

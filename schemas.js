@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const {number} = require('joi');
 
 module.exports.spotSchema = spotSchema = Joi.object({
     spot: Joi.object({
@@ -7,7 +8,8 @@ module.exports.spotSchema = spotSchema = Joi.object({
         // image: Joi.string().required(),
         location: Joi.string().required(),
         description: Joi.string().required()
-    }).required()
+    }).required(),
+    deleteImages: Joi.array()
 });
 
 module.exports.reviewSchema = Joi.object({

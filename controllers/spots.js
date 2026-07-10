@@ -1,3 +1,4 @@
+const { cloudinary } = require('../cloudinary');
 const Spot = require('../models/spot');
 const mongoose = require('mongoose');
 
@@ -10,9 +11,9 @@ module.exports.renderNewForm = (req, res) => {
     res.render('spots/new');
 }
 
-module.exports.createSpot = async (req, res) => { 
+module.exports.createSpot = async (req, res) => {
     const spot = new Spot(req.body.spot);
-    spot.images = req.files.map(f => ({url: f.path, filename: f.filename}));
+    spot.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     spot.author = req.user._id;
     await spot.save();
     req.flash('success', 'Successfully made a new spot!');
@@ -26,7 +27,7 @@ module.exports.showSpot = async (req, res) => {
         return res.redirect('/spots');
     }
     const spot = await Spot.findById(id).populate({
-        path:'reviews',
+        path: 'reviews',
         populate: {
             path: 'author'
         }
@@ -52,9 +53,17 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateSpot = async (req, res) => {
     const { id } = req.params;
+    console.log(req.body);
     const spot = await Spot.findByIdAndUpdate(id, { ...req.body.spot });
-    const imgs = req.files.map(f => ({url: f.path, filename: f.filename}));
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
     spot.images.push(...imgs);
+    if (req.body.deleteImages) {
+        for(let filename of req.body.deleteImages) {
+            cloudinary.uploader.destroy(filename);
+        }
+       await spot.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+
+    }
     await spot.save();
     req.flash('success', 'Successfully updated spot!');
     res.redirect(`/spots/${spot._id}`)
