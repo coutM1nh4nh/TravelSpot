@@ -2,7 +2,7 @@
     <h1 class="text-center mb-4">Edit Spot</h1>
     <div class="row">
         <div class="col-6 offset-3">
-            <form action="/spots/<%= spot._id %>?_method=PUT" method="POST" novalidate class="validated-form">
+            <form action="/spots/<%= spot._id %>?_method=PUT" method="POST" enctype="multipart/form-data" novalidate class="validated-form">
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
                     <input class="form-control" type="text" id="title" name="spot[title]" value="<%=spot.title %>"
@@ -20,12 +20,8 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="image">Image Url</label>
-                    <input class="form-control" type="text" id="image" name="spot[image]" value="<%= spot.image %>"
-                        required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
+                    <label class="form-label" for="image">Add Images</label>
+                    <input type="file" name="image" id="image" multiple>
                 </div>
 
                 <div class="mb-3">

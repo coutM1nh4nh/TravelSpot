@@ -19,7 +19,7 @@ router.get('/new', isLoggedIn, spots.renderNewForm);
 
 router.route('/:id')
     .get(catchAsync(spots.showSpot))
-    .put(isLoggedIn, isAuthor, validateSpot, catchAsync(spots.updateSpot))
+    .put(isLoggedIn, isAuthor, upload.array('image'), validateSpot, catchAsync(spots.updateSpot))
     .delete(isLoggedIn, isAuthor, catchAsync(spots.deleteSpot))
 
 router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(spots.renderEditForm))

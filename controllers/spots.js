@@ -15,7 +15,6 @@ module.exports.createSpot = async (req, res) => {
     spot.images = req.files.map(f => ({url: f.path, filename: f.filename}));
     spot.author = req.user._id;
     await spot.save();
-    
     req.flash('success', 'Successfully made a new spot!');
     res.redirect(`/spots/${spot._id}`);
 }
@@ -54,6 +53,9 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateSpot = async (req, res) => {
     const { id } = req.params;
     const spot = await Spot.findByIdAndUpdate(id, { ...req.body.spot });
+    const imgs = req.files.map(f => ({url: f.path, filename: f.filename}));
+    spot.images.push(...imgs);
+    await spot.save();
     req.flash('success', 'Successfully updated spot!');
     res.redirect(`/spots/${spot._id}`)
 }
