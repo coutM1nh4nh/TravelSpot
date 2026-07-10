@@ -29,7 +29,7 @@ const seedDB = async () => {
             location: `${province[randomPro].city}, ${province[randomPro].province}`,
             title: `${sample(descriptors)} ${sample(places)}`,
 
-            description: 'Cá nhân mình thì khuyên giữ lại trong lúc học. Sau này đến phần Cloudinary, upload ảnh hay chỉnh giao diện thì bạn sẽ thấy website sinh động hơn, dễ theo dõi kết quả.',
+            description: 'Vietnam is home to countless breathtaking landscapes and cultural landmarks, from the emerald waters of Ha Long Bay to the ancient streets of Hoi An and the majestic caves of Phong Nha–Ke Bang National Park. Each destination offers a unique blend of natural beauty, rich history, and local traditions, making Vietnam a perfect place for unforgettable travel experiences.',
             price,
             geometry: {
                 type: "Point",

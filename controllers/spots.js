@@ -16,9 +16,7 @@ module.exports.renderNewForm = (req, res) => {
 module.exports.createSpot = async (req, res, next) => {
     console.log('Input location:', req.body.spot.location);
     try {
-        const geoData = await maptilerClient.geocoding.forward(req.body.spot.location, {
-            limit: 1
-        });
+        const geoData = await maptilerClient.geocoding.forward(req.body.spot.location, {limit: 1});
         // console.log(geoData);
         
         if (!geoData.features?.length) {

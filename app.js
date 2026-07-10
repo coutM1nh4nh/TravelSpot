@@ -82,14 +82,6 @@ app.use('/', userRoutes);
 app.use('/spots', spotRoutes);
 app.use('/spots/:id/reviews', reviewRoutes);
 
-
-
-app.get('/fakeUser', async (req, res) => {
-    const user = new User({ email: 'minhanh@gm.com', username: 'manh' });
-    const newUser = await User.register(user, 'chicken');
-    res.send(newUser);
-})
-
 app.get('/', (req, res) => {
     res.render('home')
 });
