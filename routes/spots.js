@@ -12,11 +12,9 @@ const upload = multer({ storage });
 const Spot = require('../models/spot');
 router.route('/')
     .get(catchAsync(spots.index))
-    // .post(isLoggedIn, validateSpot, catchAsync(spots.createSpot))
-    .post(upload.array('image'),(req,res) => {
-        console.log(req.body, req.files);
-        res.send("IT WORKED")
-    })
+    .post(isLoggedIn, upload.array('image'), validateSpot, catchAsync(spots.createSpot))
+
+
 router.get('/new', isLoggedIn, spots.renderNewForm);
 
 router.route('/:id')

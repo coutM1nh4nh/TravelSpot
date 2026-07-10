@@ -10,10 +10,12 @@ module.exports.renderNewForm = (req, res) => {
     res.render('spots/new');
 }
 
-module.exports.createSpot = async (req, res) => {
+module.exports.createSpot = async (req, res) => { 
     const spot = new Spot(req.body.spot);
+    spot.images = req.files.map(f => ({url: f.path, filename: f.filename}));
     spot.author = req.user._id;
     await spot.save();
+    
     req.flash('success', 'Successfully made a new spot!');
     res.redirect(`/spots/${spot._id}`);
 }
