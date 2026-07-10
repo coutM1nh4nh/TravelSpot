@@ -1,5 +1,8 @@
  (function () {
-            'use strict';
+            'use strict'
+
+            bsCustomFileInput.init()
+
             window.addEventListener('load', function () {
                 const forms = document.getElementsByClassName('validated-form');
                 Array.from(forms)
