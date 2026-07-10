@@ -1,6 +1,8 @@
 const { cloudinary } = require('../cloudinary');
 const Spot = require('../models/spot');
 const mongoose = require('mongoose');
+const maptilerClient = require("@maptiler/client");
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 module.exports.index = async (req, res, next) => {
     const spots = await Spot.find({});
@@ -11,8 +13,19 @@ module.exports.renderNewForm = (req, res) => {
     res.render('spots/new');
 }
 
-module.exports.createSpot = async (req, res) => {
+module.exports.createSpot = async (req, res, next) => {
+    const geoData = await maptilerClient.geocoding.forward(req.body.spot.location, { limit: 1 });
+    // console.log(geoData);
+    if (!geoData.features?.length) {
+        req.flash('error', 'Could not geocode that location. Please try again and enter a valid location.');
+        return res.redirect('/spots/new');
+    }
+
     const spot = new Spot(req.body.spot);
+
+    spot.geometry = geoData.features[0].geometry;
+    spot.location = geoData.features[0].place_name;
+
     spot.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     spot.author = req.user._id;
     await spot.save();
@@ -53,15 +66,27 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateSpot = async (req, res) => {
     const { id } = req.params;
-    console.log(req.body);
+    // console.log(req.body);
+
+    const geoData = await maptilerClient.geocoding.forward(req.body.spot.location, { limit: 1 });
+    // console.log(geoData);
+    if (!geoData.features?.length) {
+        req.flash('error', 'Could not geocode that location. Please try again and enter a valid location.');
+        return res.redirect(`/spots/${id}/edit`);
+    }
+
     const spot = await Spot.findByIdAndUpdate(id, { ...req.body.spot });
+
+    spot.geometry = geoData.features[0].geometry;
+    spot.location = geoData.features[0].place_name;
+
     const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
     spot.images.push(...imgs);
     if (req.body.deleteImages) {
-        for(let filename of req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
             cloudinary.uploader.destroy(filename);
         }
-       await spot.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+        await spot.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
 
     }
     await spot.save();
