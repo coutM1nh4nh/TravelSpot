@@ -9,6 +9,7 @@ module.exports.index = async (req, res, next) => {
     res.render('spots/index', { spots })
 }
 
+
 module.exports.renderNewForm = (req, res) => {
     res.render('spots/new');
 }

@@ -25,8 +25,8 @@ const helmet = require('helmet');
 const userRoutes = require('./routes/users');
 const spotRoutes = require('./routes/spots');
 const reviewRoutes = require('./routes/reviews');
-const { MongoStore } = require('connect-mongo');
-
+const MongoStore = require('connect-mongo').default;
+console.log(MongoStore);
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/travelSpot';
 
@@ -34,8 +34,8 @@ const store = MongoStore.create({
     mongoUrl: dbUrl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: 'thisshouldbeabettersecret!'
-    }
+    secret: 'thisissecret'
+}
 });
 
 store.on('error', (err) => {
@@ -133,6 +133,7 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.use((req, res, next) => {
+
     res.locals.currentUser = req.user;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
@@ -152,17 +153,17 @@ app.all('/{*path}', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404));
 });
 
+
 app.use((err, req, res, next) => {
-    const { statusCode = 500 } = err;
-    if (!err.message) {
-        err.message = 'Oh no, Something went wrong!';
-    }
-    res.status(statusCode).render('error', { err });
+  console.error(err);
+  const { statusCode = 500 } = err;
+  if (!err.message) err.message = 'Oh no, Something went wrong!';
+  res.status(statusCode).render('error', { err });
 });
+
 
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Serving on port ${port}`);
 });
-
