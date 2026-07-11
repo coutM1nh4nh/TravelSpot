@@ -1,10 +1,6 @@
-if(process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 }
-
-
-console.log(process.env.SECRET)
-console.log(process.env.API_KEY)
 
 const sanitizeV5 = require('./utils/mongoSanitizeV5');
 const express = require('express');
@@ -16,8 +12,6 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
-
-const { MongoStore } = require('connect-mongo');
 const flash = require('connect-flash');
 const Joi = require('joi');
 const ExpressError = require('./utils/expressError');
@@ -31,8 +25,22 @@ const helmet = require('helmet');
 const userRoutes = require('./routes/users');
 const spotRoutes = require('./routes/spots');
 const reviewRoutes = require('./routes/reviews');
+const { MongoStore } = require('connect-mongo');
+
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/travelSpot';
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisshouldbeabettersecret!'
+    }
+});
+
+store.on('error', (err) => {
+    console.log('SESSION STORE ERROR', err);
+});
 
 mongoose.connect(dbUrl)
     .then(() => {
@@ -58,15 +66,10 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(sanitizeV5({ replaceWith: '_' }));
 
-const store = MongoStore.create({
-    mongoUrl: dbUrl,
-    touchAfter: 24 * 60 * 60,
-    crypto: {
-        secret: 'thisshouldbeabettersecret!'
-    }
-});
+
 
 const sessionConfig = {
+    store,
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
@@ -109,15 +112,15 @@ app.use(session(sessionConfig));
 app.use(flash());
 app.use(helmet.contentSecurityPolicy({
     directives: {
-            defaultSrc: [],
-            connectSrc: ["'self'", ...connectSrcUrls],
-            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
-            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-            workerSrc: ["'self'", "blob:"],
-            objectSrc: [],
-            imgSrc: ["'self'", "blob:", "data:", ...imgSrcUrls],
-            fontSrc: ["'self'", ...fontSrcUrls]
-        }
+        defaultSrc: [],
+        connectSrc: ["'self'", ...connectSrcUrls],
+        scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+        styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+        workerSrc: ["'self'", "blob:"],
+        objectSrc: [],
+        imgSrc: ["'self'", "blob:", "data:", ...imgSrcUrls],
+        fontSrc: ["'self'", ...fontSrcUrls]
+    }
 }
 ));
 
