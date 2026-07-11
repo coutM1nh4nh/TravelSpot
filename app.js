@@ -16,6 +16,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
+
+const { MongoStore } = require('connect-mongo');
 const flash = require('connect-flash');
 const Joi = require('joi');
 const ExpressError = require('./utils/expressError');
@@ -30,7 +32,9 @@ const userRoutes = require('./routes/users');
 const spotRoutes = require('./routes/spots');
 const reviewRoutes = require('./routes/reviews');
 
-mongoose.connect('mongodb://127.0.0.1:27017/travelSpot')
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/travelSpot';
+
+mongoose.connect(dbUrl)
     .then(() => {
         console.log('MongoDB Connected!');
     })
@@ -54,6 +58,13 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(sanitizeV5({ replaceWith: '_' }));
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisshouldbeabettersecret!'
+    }
+});
 
 const sessionConfig = {
     secret: process.env.SECRET,

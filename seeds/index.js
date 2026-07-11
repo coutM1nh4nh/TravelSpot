@@ -3,7 +3,13 @@ const province = require('./province');
 const { places, descriptors } = require('./seedHelpers');
 const Spot = require('../models/spot');
 
-mongoose.connect('mongodb://127.0.0.1:27017/travelSpot')
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/travelSpot';
+
+mongoose.connect(dbUrl)
     .then(() => {
         console.log('MongoDB Connected!');
     })
@@ -25,7 +31,7 @@ const seedDB = async () => {
         const randomPro = Math.floor(Math.random() * province.length)
         const price = Math.floor(Math.random() * 900000) + 100000
         const spot = new Spot({
-            author: '6a491e0f479e1c2fa8da4096',
+            author: '6a521b3ac13afdcff040544c',
             location: `${province[randomPro].city}, ${province[randomPro].province}`,
             title: `${sample(descriptors)} ${sample(places)}`,
 
