@@ -1,23 +1,23 @@
 <% layout('layouts/boilerplate') %>
     <h1 class="text-center mb-4">Edit Spot</h1>
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-md-6 offset-md-3">
             <form action="/spots/<%= spot._id %>?_method=PUT" method="POST" enctype="multipart/form-data" novalidate
                 class="validated-form">
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
                     <input class="form-control" type="text" id="title" name="spot[title]" value="<%=spot.title %>"
                         required>
-                    <div class="valid-feedback">
-                        Looks good!
+                    <div class="invalid-feedback">
+                        Please enter title.
                     </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="location">Location</label>
                     <input class="form-control" type="text" id="location" name="spot[location]" required
                         value="<%= spot.location %>">
-                    <div class="valid-feedback">
-                        Looks good!
+                    <div class="invalid-feedback">
+                        Please enter location.
                     </div>
                 </div>
 
@@ -29,8 +29,8 @@
                         <span class="input-group-text" id="basic-addon1">$</span>
                         <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
                             aria-describedby="price-label" name="spot[price]" value="<%= spot.price %>" required>
-                        <div class="valid-feedback">
-                            Looks good!
+                        <div class="invalid-feedback">
+                            Please enter price.
                         </div>
                     </div>
                 </div>
@@ -39,8 +39,8 @@
                     <label class="form-label" for="description">Description</label>
                     <textarea class="form-control" type="text" id="description" name="spot[description]"
                         required><%= spot.description %></textarea>
-                    <div class="valid-feedback">
-                        Looks good!
+                    <div class="invalid-feedback">
+                        Please enter your description.
                     </div>
                 </div>
                 <div class="mb-3">
