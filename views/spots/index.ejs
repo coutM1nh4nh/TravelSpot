@@ -1,11 +1,11 @@
 <% layout('layouts/boilerplate') %>
-<div id="map" style="width: 100%; height: 500px"></div>
+<div id="cluster-map" style="width: 100%; height: 500px"></div>
     <h1>All Spots</h1>
     <div>
         <a href="/spots/new">Add Spot</a>
     </div>
     <% for (let spot of spots) { %>
-        <div class="card" mb-3>
+        <div class="card-mb-3" >
             <div class="row">
                 <div class="col-md-4">
                     <img class="img-fluid" alt="" src="<%= spot.images[0].url %>">
