@@ -22,7 +22,8 @@ const ExpressError = require('./utils/expressError');
 const methodOverride = require('method-override');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-const User = require('./models/user')
+const User = require('./models/user');
+const helmet = require('helmet');
 
 
 const userRoutes = require('./routes/users');
@@ -65,10 +66,49 @@ const sessionConfig = {
     }
 }
 
+const scriptSrcUrls = [
+    "https://cdn.jsdelivr.net",
+    "https://cdn.maptiler.com"
+];
+
+const styleSrcUrls = [
+    "https://cdn.jsdelivr.net",
+    "https://cdn.maptiler.com",
+    "https://fonts.googleapis.com"
+];
+
+const connectSrcUrls = [
+    "https://api.maptiler.com",
+    "https://events.maptiler.com"
+];
+
+const fontSrcUrls = [
+    "https://fonts.gstatic.com"
+];
+
+const imgSrcUrls = [
+    "https://res.cloudinary.com",
+    "https://picsum.photos",
+    "https://images.unsplash.com",
+    "data:",
+    "blob:"
+];
+
 app.use(session(sessionConfig));
-
 app.use(flash());
-
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: ["'self'", "blob:", "data:", ...imgSrcUrls],
+            fontSrc: ["'self'", ...fontSrcUrls]
+        }
+}
+));
 
 app.use(passport.initialize());
 app.use(passport.session());
