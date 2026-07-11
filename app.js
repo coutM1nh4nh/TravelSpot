@@ -5,7 +5,12 @@ if(process.env.NODE_ENV !== "production") {
 console.log(process.env.SECRET)
 console.log(process.env.API_KEY)
 
+const sanitizeV5 = require('./utils/mongoSanitizeV5');
 const express = require('express');
+const app = express();
+
+app.set('query parser', 'extended');
+
 const path = require('path');
 const mongoose = require('mongoose');
 const ejsMate = require('ejs-mate');
@@ -17,6 +22,7 @@ const methodOverride = require('method-override');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/user')
+
 
 const userRoutes = require('./routes/users');
 const spotRoutes = require('./routes/spots');
@@ -36,7 +42,6 @@ db.once('open', () => {
     console.log('Database connected');
 });
 
-const app = express();
 
 app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs');
@@ -45,9 +50,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(sanitizeV5({ replaceWith: '_' }));
+
 
 const sessionConfig = {
-    secret: 'thisshouldbeabeeterse',
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
