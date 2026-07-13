@@ -82,7 +82,8 @@ const sessionConfig = {
 
 const scriptSrcUrls = [
     "https://cdn.jsdelivr.net",
-    "https://cdn.maptiler.com"
+    "https://cdn.maptiler.com",
+    "https://code.jquery.com"
 ];
 
 const styleSrcUrls = [
