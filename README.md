@@ -162,3 +162,21 @@ TravelSpot includes several security features:
 - Protected routes
 - Session-based authentication
 - Input sanitization
+
+## 📈 Project Highlights
+
+- Full-stack web application
+- RESTful architecture
+- Authentication & Authorization
+- CRUD operations
+- Image upload
+- Interactive maps
+- Responsive UI
+- MVC architecture
+
+## 👨‍💻 Author
+
+**Minh Anh**
+
+- GitHub: https://github.com/coutM1nh4nh
+- Email: 24520118@gmail.com
