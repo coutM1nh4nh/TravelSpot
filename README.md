@@ -113,3 +113,15 @@ MAPTILER_API_KEY=
 ```
 
 > **Note:** Never commit your `.env` file or API keys to GitHub.
+
+## 💡 Usage
+
+After starting the application, you can:
+
+- Register a new account.
+- Log in securely.
+- Create travel destinations.
+- Upload multiple images.
+- Explore locations on an interactive map.
+- Write ratings and reviews.
+- Edit or delete your own travel spots and reviews.
