@@ -41,15 +41,23 @@ It allows users to explore spots on an interactive map, upload images, write rev
 ## 📷 Screenshots
 <h1>Home</h1>
 <p align="center">
-<img src="C:\TravelSpot\screenshort\Screenshot 2026-07-12 112723.png" width="90%">
+<img src="screenshort/home.png" width="90%">
 </p>
 <h1>Login</h1>
 <p align="center">
-<img src="C:\TravelSpot\screenshort\Screenshot 2026-07-12 120509.png" width="90%">
+<img src="screenshort/login.png" width="90%">
 </p>
 <h1>Spot List</h1>
 <p align="center">
-<img src="C:\TravelSpot\screenshort\Screenshot 2026-07-12 115352.png" width="90%">
+<img src="screenshort/spots.png" width="90%">
+</p>
+<h1>Spot Details</h1>
+<p align="center">
+<img src="screenshort/detail.png" width="90%">
+</p>
+<h1>Interactive Map</h1>
+<p align="center">
+<img src="screenshort/map.png" width="90%">
 </p>
 
 
