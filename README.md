@@ -125,3 +125,40 @@ After starting the application, you can:
 - Explore locations on an interactive map.
 - Write ratings and reviews.
 - Edit or delete your own travel spots and reviews.
+
+## 🚀 Future Improvements
+
+- ❤️ Favorite destinations
+- 🔍 Advanced search and filtering
+- 📱 Fully responsive mobile interface
+- 🌍 Multi-language support
+- 📨 Email verification
+- 🔔 Notifications
+- 📊 Admin dashboard
+- ☁️ Deploy to a cloud platform
+
+## 📦 Main Dependencies
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- Passport.js
+- Joi
+- Bootstrap 4
+- Cloudinary
+- Multer
+- MapTiler 
+- Express Session
+- Connect Flash
+
+## 🛡️ Security
+
+TravelSpot includes several security features:
+
+- Password hashing with Passport.js
+- Authentication and authorization
+- Server-side validation using Joi
+- Protected routes
+- Session-based authentication
+- Input sanitization
