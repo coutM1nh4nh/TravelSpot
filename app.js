@@ -105,6 +105,7 @@ const imgSrcUrls = [
     "https://res.cloudinary.com",
     "https://picsum.photos",
     "https://images.unsplash.com",
+    "https://api.maptiler.com", 
     "data:",
     "blob:"
 ];
