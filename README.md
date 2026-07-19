@@ -60,4 +60,36 @@ It allows users to explore spots on an interactive map, upload images, write rev
 <img src="screenshort/map.png" width="90%">
 </p>
 
+## ⚙️ Installation
 
+Clone the repository
+
+```bash
+git clone https://github.com/coutM1nh4nh/TravelSpot
+```
+
+Navigate to the project directory
+
+```bash
+cd TravelSpot
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Create a `.env` file and configure the required environment variables.
+
+Start the application
+
+```bash
+npm start
+```
+
+Visit:
+
+```
+http://localhost:3000
+```
