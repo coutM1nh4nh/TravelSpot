@@ -112,19 +112,25 @@ const imgSrcUrls = [
 
 app.use(session(sessionConfig));
 app.use(flash());
-app.use(helmet.contentSecurityPolicy({
-    directives: {
-        defaultSrc: [],
-        connectSrc: ["'self'", ...connectSrcUrls],
-        scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
-        styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-        workerSrc: ["'self'", "blob:"],
-        objectSrc: [],
-        imgSrc: ["'self'", "blob:", "data:", ...imgSrcUrls],
-        fontSrc: ["'self'", ...fontSrcUrls]
-    }
-}
-));
+// app.use(helmet.contentSecurityPolicy({
+//     directives: {
+//         defaultSrc: [],
+//         connectSrc: ["'self'", ...connectSrcUrls],
+//         scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+//         styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+//         workerSrc: ["'self'", "blob:"],
+//         objectSrc: [],
+//         imgSrc: ["'self'", "blob:", "data:", ...imgSrcUrls],
+//         fontSrc: ["'self'", ...fontSrcUrls]
+//     }
+// }
+// ));
+
+app.use(
+    helmet({
+        contentSecurityPolicy: false
+    })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
