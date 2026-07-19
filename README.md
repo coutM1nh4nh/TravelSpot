@@ -39,4 +39,17 @@ It allows users to explore spots on an interactive map, upload images, write rev
 - Multi-language support
 
 ## 📷 Screenshots
+<h1>Home</h1>
+<p align="center">
+<img src="C:\TravelSpot\screenshort\Screenshot 2026-07-12 112723.png" width="90%">
+</p>
+<h1>Login</h1>
+<p align="center">
+<img src="C:\TravelSpot\screenshort\Screenshot 2026-07-12 120509.png" width="90%">
+</p>
+<h1>Spot List</h1>
+<p align="center">
+<img src="C:\TravelSpot\screenshort\Screenshot 2026-07-12 115352.png" width="90%">
+</p>
+
 
