@@ -94,3 +94,22 @@ Visit:
 http://localhost:3000
 ```
 
+## 🔑 Environment Variables
+
+Create a `.env` file in the root directory.
+
+```env
+DB_URL=
+
+SECRET=
+
+CLOUDINARY_CLOUD_NAME=
+
+CLOUDINARY_KEY=
+
+CLOUDINARY_SECRET=
+
+MAPTILER_API_KEY=
+```
+
+> **Note:** Never commit your `.env` file or API keys to GitHub.
